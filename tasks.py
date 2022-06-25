@@ -26,18 +26,32 @@ def tasks():
 
     table = Table()
     table.add_column("")
-    table.add_column("ID")
-    table.add_column("Title")
-    table.add_column("Status")
-    table.add_column("Project")
-    table.add_column("Date Created")
+    table.add_column("[red bold]ID")
+    table.add_column("[red bold]Title")
+    table.add_column("[red bold]Status")
+    table.add_column("[red bold]Project")
+    table.add_column("[red bold]Date Created")
 
     for task in tasks:
+        stat = task.status
+
+        if stat == "Todo":
+            stat = task_status.todo.value
+
+        elif stat == "Doing":
+            stat = task_status.doing.value
+
+        elif stat == "Done":
+            stat = task_status.done.value
+
+        elif stat == "Stalled":
+            stat = task_status.stalled.value
+
         table.add_row(
             f"{task_tick.done.value if task.done else task_tick.not_done.value}",
             f"{task.id}",
             f"{task.title}",
-            f"{task.status}",
+            f"{stat}",
             f"{task.project}",
             f"{task.date_created}",
         )
@@ -53,19 +67,31 @@ def proj_tasks(id: int):
 
     table = Table()
     table.add_column("")
-    table.add_column("ID")
-    table.add_column("Title")
-    table.add_column("Status")
-    table.add_column("Project")
-    table.add_column("Date Created")
+    table.add_column("[red bold]ID")
+    table.add_column("[red bold]Title")
+    table.add_column("[red bold]Status")
+    table.add_column("[red bold]Date Created")
 
     for task in tasks:
+        stat = task.status
+
+        if stat == "Todo":
+            stat = task_status.todo.value
+
+        elif stat == "Doing":
+            stat = task_status.doing.value
+
+        elif stat == "Done":
+            stat = task_status.done.value
+
+        elif stat == "Stalled":
+            stat = task_status.stalled.value
+
         table.add_row(
             f"{task_tick.done.value if task.done else task_tick.not_done.value}",
             f"{task.id}",
             f"{task.title}",
-            f"{task.status}",
-            f"{task.project}",
+            f"{stat}",
             f"{task.date_created}",
         )
 

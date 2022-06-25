@@ -2,10 +2,10 @@ import enum
 
 
 class proj_status(enum.Enum):
-    planned = "[pink]Planned"
+    planned = "[blue]Planned"
     in_progress = "[yellow]In Progress"
     completed = "[green]Completed"
-    maintainance = "[orange]Under Maintainance"
+    maintainance = "[red bold]Under Maintainance"
 
 
 class task_status(enum.Enum):
