@@ -142,11 +142,10 @@ def delete(id: int):
 @app.command("update")
 def update(id: int):
     "Updates Task"
-    task = crud.get_task(id)
 
     opt = {
         "Status": change_status,
-        "Title": (),
+        "Title": change_title,
         "Completion": (),
     }
 
@@ -171,6 +170,14 @@ def change_status(id: int):
     ans = inquirer.prompt(que)["stat"]
 
     crud.update_task_status(id, ans)
+
+    view_task(id)
+
+
+def change_title(id: int):
+    new_title = input("Enter a new title: ")
+
+    crud.update_task_title(id, new_title)
 
     view_task(id)
 

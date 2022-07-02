@@ -43,12 +43,14 @@ def delete_project(id: int):
     session.delete(proj)
     session.commit()
 
+
 def update_project_status(id: int, status: str):
     "Updates Status of Project"
 
     proj = session.query(db.Project).get(id)
     proj.status = status
     session.commit()
+
 
 # Tasks Section
 def get_all_tasks():
@@ -96,4 +98,12 @@ def update_task_status(id: int, status: str):
 
     task = session.query(db.Task).get(id)
     task.status = status
+    session.commit()
+
+
+def update_task_title(id: int, title: str):
+    "Updates Title of Task"
+
+    task = session.query(db.Task).get(id)
+    task.title = title
     session.commit()
