@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 # User Modules
-import database as db
+from .database import Base, Project, Task
 
 # Creates engine for connection to database
 engine = create_engine(
@@ -11,7 +11,7 @@ engine = create_engine(
 )
 
 # Creates missing tables and columns
-db.Base.metadata.create_all(engine)
+Base.metadata.create_all(engine)
 
 # Creates database connection session
 session = Session(engine)
@@ -20,12 +20,12 @@ session = Session(engine)
 # Projects Section
 def get_projects():
     "Returns List of All Projects"
-    return session.query(db.Project).all()
+    return session.query(Project).all()
 
 
 def add_project(title: str):
     "Adds New Project and Returns Project Object"
-    new_project = db.Project(name=title)
+    new_project = Project(name=title)
 
     session.add(new_project)
     session.commit()
@@ -34,12 +34,12 @@ def add_project(title: str):
 
 def get_project(id: int):
     "Returns Project"
-    return session.query(db.Project).get(id)
+    return session.query(Project).get(id)
 
 
 def delete_project(id: int):
     "Deletes Project"
-    proj = session.query(db.Project).get(id)
+    proj = session.query(Project).get(id)
     session.delete(proj)
     session.commit()
 
@@ -47,7 +47,7 @@ def delete_project(id: int):
 def update_project_status(id: int, status: str):
     "Updates Status of Project"
 
-    proj = session.query(db.Project).get(id)
+    proj = session.query(Project).get(id)
     proj.status = status
     session.commit()
 
@@ -55,22 +55,22 @@ def update_project_status(id: int, status: str):
 # Tasks Section
 def get_all_tasks():
     "Returns List of All Tasks"
-    return session.query(db.Task).all()
+    return session.query(Task).all()
 
 
 def get_project_tasks(project_id: int):
     "Returns List of Task Related to Current Project"
-    return session.query(db.Task).where(db.Task.project_id == project_id)
+    return session.query(Task).where(Task.project_id == project_id)
 
 
 def get_task(task_id: int):
     "Returns Task"
-    return session.query(db.Task).get(task_id)
+    return session.query(Task).get(task_id)
 
 
 def add_task(title: str, project_id: int):
     "Adds Task to Project and Returns Task Object"
-    new_task = db.Task(title=title, project_id=project_id)
+    new_task = Task(title=title, project_id=project_id)
 
     session.add(new_task)
     session.commit()
@@ -79,7 +79,7 @@ def add_task(title: str, project_id: int):
 
 def mark_as_done(task_id: int):
     "Marks Task as Done and Returns Task Object"
-    task = session.query(db.Task).get(task_id)
+    task = session.query(Task).get(task_id)
     task.mark_as_done()
     session.add(task)
     session.commit()
@@ -88,7 +88,7 @@ def mark_as_done(task_id: int):
 
 def delete_task(task_id: int):
     "Deletes Task"
-    task = session.query(db.Task).get(task_id)
+    task = session.query(Task).get(task_id)
     session.delete(task)
     session.commit()
 
@@ -96,7 +96,7 @@ def delete_task(task_id: int):
 def update_task_status(id: int, status: str):
     "Updates Status of Task"
 
-    task = session.query(db.Task).get(id)
+    task = session.query(Task).get(id)
     task.status = status
     session.commit()
 
@@ -104,6 +104,6 @@ def update_task_status(id: int, status: str):
 def update_task_title(id: int, title: str):
     "Updates Title of Task"
 
-    task = session.query(db.Task).get(id)
+    task = session.query(Task).get(id)
     task.title = title
     session.commit()

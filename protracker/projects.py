@@ -6,8 +6,8 @@ from rich.tree import Tree
 from rich.table import Table
 
 # User Modules
-from enums import proj_status, task_status, task_tick
-import crud
+from .enums import proj_status, task_status, task_tick
+from .crud import get_projects, add_project, get_project, update_project_status
 
 
 app = typer.Typer()
@@ -16,7 +16,7 @@ app = typer.Typer()
 @app.command("new")
 def new_project(title: str):
     "Adds New Project"
-    crud.add_project(title)
+    add_project(title)
 
     rich.print("[green]Project Added")
 
@@ -24,7 +24,7 @@ def new_project(title: str):
 @app.command("all")
 def print_projects():
     "Prints Table of All Projects"
-    projects = crud.get_projects()
+    projects = get_projects()
 
     table = Table()
     table.add_column("[red bold]Id")
@@ -60,7 +60,7 @@ def print_projects():
 @app.command("tree")
 def print_tree():
     "Prints Projects and Tasks in Tree View"
-    projects = crud.get_projects()
+    projects = get_projects()
     mtree = Tree("[blue bold]Projects")
     for project in projects:
         tree = Tree(f"[green]{project.name}")
@@ -78,7 +78,7 @@ def print_tree():
 def project_details(project_id: int):
     "Gives Project Details"
 
-    project = crud.get_project(project_id)
+    project = get_project(project_id)
 
     stat = project.status
 
@@ -130,7 +130,7 @@ def change_status(id: int):
 
     ans = inquirer.prompt(que)["stat"]
 
-    crud.update_project_status(id, ans)
+    update_project_status(id, ans)
 
     project_details(id)
 

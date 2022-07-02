@@ -1,9 +1,18 @@
 import typer
-import crud
+from .crud import (
+    add_task,
+    get_all_tasks,
+    get_project_tasks,
+    get_task,
+    mark_as_done,
+    delete_task,
+    update_task_status,
+    update_task_title,
+)
 import rich
 import inquirer
 from rich.table import Table
-from enums import proj_status, task_status, task_tick
+from .enums import proj_status, task_status, task_tick
 
 
 app = typer.Typer()
@@ -13,7 +22,7 @@ app = typer.Typer()
 def new_task(title: str, project_id: int):
     "Adds a new task to project"
 
-    crud.add_task(title, project_id)
+    add_task(title, project_id)
     rich.print("[green]Task Added!")
 
     proj_tasks(project_id)
@@ -22,7 +31,7 @@ def new_task(title: str, project_id: int):
 @app.command("all")
 def tasks():
     "Gets all Tasks regardless of Project"
-    tasks = crud.get_all_tasks()
+    tasks = get_all_tasks()
 
     table = Table()
     table.add_column("")
@@ -63,7 +72,7 @@ def tasks():
 def proj_tasks(id: int):
     "Gets all Tasks of Project"
 
-    tasks = crud.get_project_tasks(id)
+    tasks = get_project_tasks(id)
 
     table = Table()
     table.add_column("")
@@ -101,7 +110,7 @@ def proj_tasks(id: int):
 @app.command("view")
 def view_task(id: int):
     "Shows Detail about Task"
-    task = crud.get_task(id)
+    task = get_task(id)
     stat = task.status
 
     if stat == "Todo":
@@ -128,14 +137,14 @@ def view_task(id: int):
 
 @app.command("complete")
 def done(id: int):
-    task = crud.mark_as_done(id)
+    task = mark_as_done(id)
     rich.print("[green bold]Task Marked as Done")
 
 
 @app.command("delete")
 def delete(id: int):
     "Deletes Task"
-    crud.delete_task(id)
+    delete_task(id)
     rich.print("[red bold]Task Deleted")
 
 
@@ -169,7 +178,7 @@ def change_status(id: int):
 
     ans = inquirer.prompt(que)["stat"]
 
-    crud.update_task_status(id, ans)
+    update_task_status(id, ans)
 
     view_task(id)
 
@@ -177,7 +186,7 @@ def change_status(id: int):
 def change_title(id: int):
     new_title = input("Enter a new title: ")
 
-    crud.update_task_title(id, new_title)
+    update_task_title(id, new_title)
 
     view_task(id)
 
