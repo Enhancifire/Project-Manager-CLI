@@ -1,13 +1,20 @@
 # Third Party Dependancies
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
+import os
 
 # User Modules
 from .database import Base, Project, Task
 
 # Creates engine for connection to database
+def database_path():
+    home = os.path.expanduser("~")
+    path = os.path.join(home, ".config", "protrack", "db.sqlite3")
+    return path
+
+
 engine = create_engine(
-    url="sqlite:///db.sqlite3",
+    url=f"sqlite:///protrack.sqlite3",
 )
 
 # Creates missing tables and columns
